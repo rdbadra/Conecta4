@@ -22,32 +22,44 @@ def h1(state):
         else:
             enemy = 'X'
         x, y = move
-        n = 0  # n is number of moves in row
+        n = 0
         nBlancos = 0
+        nEnemy = 0
+        nPlayer = 0
         while (x < 8 and x > 0) and (y< 7 and y>0):
             if(board.get((x, y)) == player):
-                n += 10
-                nBlancos = 0
+                nPlayer += 1
+                if(nPlayer + nBlancos > 3 or nBlancos > 3):
+                    n += 10 * nPlayer
+                    nEnemy = 0
+                    #nBlancos = 0
             elif (board.get((x, y)) == enemy):
-                n -= 10
+                nEnemy += 1
+                n -= 10 * nEnemy
                 nBlancos = 0
+                nPlayer = 0
             else :
                 nBlancos += 1
-                n += 5*nBlancos
+
+                n += 5 * nBlancos
+
             x, y = x + delta_x, y + delta_y
         x, y = move
+        nBlancos = 0
+        nPlayer = 0
+        nEnemy = 0
         while (x < 8 and x > 0) and (y < 7 and y > 0):
             if (board.get((x, y)) == player):
-                n += 10
-                nBlancos = 0
+                nPlayer += 1
+                if(nPlayer + nBlancos > 3  or nBlancos > 3):
+                    n += 10 * nPlayer
+                    nEnemy = 0
+                    #nBlancos = 0
             elif (board.get((x, y)) == enemy):
+                nEnemy += 1
                 n -= 10
                 nBlancos = 0
-
-
-
-
-                
+                nPlayer = 0
             else:
                 nBlancos += 1
                 n += 5*nBlancos
