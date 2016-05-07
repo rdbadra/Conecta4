@@ -6,8 +6,27 @@ game = games.ConnectFour()
 
 state = game.initial
 
+selectPlayer = raw_input("Introduzca p si quieres empezar o introduzca m si quieres que empiece la maquina")
 
-player = 'X'
+if selectPlayer == 'p':
+    player = 'O'
+    print "Empiezas tu"
+else:
+    player = 'X'
+    print "Empieza la maquina"
+
+selectDificulty = raw_input("Seleccione la dificultad: f->facil, m->medio, d->dificil")
+
+if selectDificulty == 'f':
+    d = 1
+elif selectDificulty == 'm':
+    d = 2
+if selectDificulty == 'd':
+    d = 4
+else:
+    d = 4
+    print "No ha seleccionado ninguna dificultad"
+
 
 while True:
     print "Jugador a mover:", game.to_move(state)
@@ -29,7 +48,7 @@ while True:
         print "Thinking..."
         #move = games.minimax_decision(state, game)
         #move = games.alphabeta_full_search(state, game)
-        move = games.alphabeta_search(state, game, eval_fn = h1)
+        move = games.alphabeta_search(state, game, eval_fn = h1,d = d)
         #print h1(state)
 
         state = game.make_move(move, state)

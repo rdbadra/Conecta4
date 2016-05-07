@@ -22,26 +22,26 @@ def h1(state):
         else:
             enemy = 'X'
         x, y = move
-        n = 0
-        nBlancos = 0
-        nEnemy = 0
-        nPlayer = 0
+        n = 0         #Total
+        nBlancos = 0  #Number of spaces
+        nEnemy = 0    #Number of enemy's boxes
+        nPlayer = 0   #Number of player's boxes
         while (x < 8 and x > 0) and (y< 7 and y>0):
             if(board.get((x, y)) == player):
                 nPlayer += 1
                 if(nPlayer + nBlancos > 3 or nBlancos > 3):
                     n += 10 * nPlayer
                     nEnemy = 0
-                    #nBlancos = 0
+                    nBlancos = 0
             elif (board.get((x, y)) == enemy):
                 nEnemy += 1
                 n -= 10 * nEnemy
                 nBlancos = 0
                 nPlayer = 0
             else :
-                nBlancos += 1
-
-                n += 5 * nBlancos
+                if nBlancos < 3:
+                    nBlancos += 1
+                    n += 5 * nBlancos
 
             x, y = x + delta_x, y + delta_y
         x, y = move
@@ -54,15 +54,16 @@ def h1(state):
                 if(nPlayer + nBlancos > 3  or nBlancos > 3):
                     n += 10 * nPlayer
                     nEnemy = 0
-                    #nBlancos = 0
+                    nBlancos = 0
             elif (board.get((x, y)) == enemy):
                 nEnemy += 1
                 n -= 10
                 nBlancos = 0
                 nPlayer = 0
             else:
-                nBlancos += 1
-                n += 5*nBlancos
+                if nBlancos < 3:
+                    nBlancos += 1
+                    n += 5*nBlancos
             x, y = x - delta_x, y - delta_y
         n -= 10  # Because we counted move itself twice
         return n
