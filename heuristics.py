@@ -16,7 +16,6 @@ def h0(state):
 
 def h1(state):
     def k_in_row(board, move, player, (delta_x, delta_y)):
-        "Return true if there is a line through move on board for player."
         if player == 'X':
             enemy = 'O'
         else:
@@ -32,17 +31,16 @@ def h1(state):
                 if(nPlayer + nBlancos > 3 or nBlancos > 3):
                     n += 10 * nPlayer
                     nEnemy = 0
-                    nBlancos = 0
+                    #nBlancos = 0
             elif (board.get((x, y)) == enemy):
                 nEnemy += 1
-                n -= 10 * nEnemy
+                n -= 10
                 nBlancos = 0
                 nPlayer = 0
             else :
-                if nBlancos < 3:
+                if nBlancos < 4:
                     nBlancos += 1
                     n += 5 * nBlancos
-
             x, y = x + delta_x, y + delta_y
         x, y = move
         nBlancos = 0
@@ -54,18 +52,18 @@ def h1(state):
                 if(nPlayer + nBlancos > 3  or nBlancos > 3):
                     n += 10 * nPlayer
                     nEnemy = 0
-                    nBlancos = 0
+                    #nBlancos = 0
             elif (board.get((x, y)) == enemy):
                 nEnemy += 1
                 n -= 10
                 nBlancos = 0
                 nPlayer = 0
             else:
-                if nBlancos < 3:
+                if nBlancos < 4:
                     nBlancos += 1
                     n += 5*nBlancos
             x, y = x - delta_x, y - delta_y
-        n -= 10  # Because we counted move itself twice
+        #n -= 10  # Because we counted move itself twice
         return n
 
     def legal_moves(state):
