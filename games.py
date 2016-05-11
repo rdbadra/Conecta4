@@ -112,7 +112,7 @@ def alphabeta_search(state, game, d=4, cutoff_test=None, eval_fn=None):
     #     print "------\n"
 
     for a, s in lista:
-        print min_value(s, -infinity, infinity, 0), s.board
+        print min_value(s, -infinity, infinity, 0)
 
     action, state = argmax(lista,
                            lambda ((a, s)): min_value(s, -infinity, infinity, 0))

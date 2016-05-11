@@ -1,20 +1,16 @@
 from random import randint
 
 #Random heusistic
-def h0(state):
-    count = 0
-
-    '''for i in range(1, 8):
-        move = (4,i)
-        x, y = move
-        while state.board.get((x, y)) == 'X':
-            count += 1
-            x, y = x+1 , y + 0
-            #print "y: %d x: %d count: %d" % (y, x, count)
-    '''
-    return count
+def memoize(f):
+    memo = {}
+    def helper(x, y , j, k):
+        if x not in memo:
+            memo[x] = f(x, y, j, k)
+        return memo[x]
+    return helper
 
 def h1(state):
+
     def k_in_row(board, move, player, (delta_x, delta_y)):
         if player == 'X':
             enemy = 'O'
@@ -23,45 +19,35 @@ def h1(state):
         x, y = move
         n = 0         #Total
         nBlancos = 0  #Number of spaces
-        nEnemy = 0    #Number of enemy's boxes
         nPlayer = 0   #Number of player's boxes
         while (x < 8 and x > 0) and (y< 7 and y>0):
             if(board.get((x, y)) == player):
                 nPlayer += 1
                 if(nPlayer + nBlancos > 3 or nBlancos > 3):
-                    n += 10 * nPlayer
-                    nEnemy = 0
-                    #nBlancos = 0
+                    n += 10 * (nPlayer+nBlancos)
             elif (board.get((x, y)) == enemy):
-                nEnemy += 1
                 n -= 10
                 nBlancos = 0
                 nPlayer = 0
             else :
                 if nBlancos < 4:
                     nBlancos += 1
-                    n += 5 * nBlancos
             x, y = x + delta_x, y + delta_y
         x, y = move
         nBlancos = 0
         nPlayer = 0
-        nEnemy = 0
         while (x < 8 and x > 0) and (y < 7 and y > 0):
             if (board.get((x, y)) == player):
                 nPlayer += 1
                 if(nPlayer + nBlancos > 3  or nBlancos > 3):
-                    n += 10 * nPlayer
-                    nEnemy = 0
-                    #nBlancos = 0
+                    n += 10 * (nPlayer+nBlancos)
             elif (board.get((x, y)) == enemy):
-                nEnemy += 1
                 n -= 10
                 nBlancos = 0
                 nPlayer = 0
             else:
                 if nBlancos < 4:
                     nBlancos += 1
-                    n += 5*nBlancos
             x, y = x - delta_x, y - delta_y
         #n -= 10  # Because we counted move itself twice
         return n
@@ -74,12 +60,77 @@ def h1(state):
     if state.utility != 0:
         return state.utility * 10000000
 
+
+    def k_in_row3(board, move, player, (delta_x, delta_y)):
+        "Return true if there is a line through move on board for player."
+
+        x, y = move
+        n = 1  # n is number of moves in row
+        while board.get((x, y)) == player:
+            n += 1
+            x, y = x + delta_x, y + delta_y
+        x, y = move
+        while board.get((x, y)) == player:
+            n += 1
+            x, y = x - delta_x, y - delta_y
+        n -= 1  # Because we counted move itself twice
+        if n >= 4:
+            if player == 'X':
+                return 1000000
+            else:
+                return -1000000
+        else:
+            return 0
+
+    def k_in_row2(board, move, player, (delta_x, delta_y)):
+        "Return true if there is a line through move on board for player."
+
+        x, y = move
+        n = 0  # n is number of moves in row
+        while (x < 8 and x > 0) and (y < 7 and y > 0):
+            if board.get((x,y))==player:
+                n += 1
+            x, y = x + delta_x, y + delta_y
+        x, y = move
+        while (x < 8 and x > 0) and (y < 7 and y > 0):
+            if board.get((x, y)) == player:
+                n += 1
+            x, y = x - delta_x, y - delta_y
+        #n -= 1  # Because we counted move itself twice
+        if n >= 4:
+
+            if player=='X':
+                return 1000000
+            else:
+                return -1000000
+        else:
+            return 0
+
+
     valor_de_heuristica = 0
+    valor_de_heuristicaOtro = 0
     ml = legal_moves(state)
+    if state.to_move == 'X':
+        enemy = 'O'
+    else:
+        enemy = 'X'
+    a = 0
     for i in ml:
-        #cambiar aqui
+        """a += k_in_row3(state.board, i, state.to_move, (1, 0))
+        a += k_in_row3(state.board, i, state.to_move, (1, 1))
+        a += k_in_row3(state.board, i, state.to_move, (1, -1))
+        a += k_in_row3(state.board, i, state.to_move, (0, 1))
+
+        if(a!=0):
+            return a"""
+
         valor_de_heuristica += k_in_row(state.board, i, state.to_move, (1, 0))
         valor_de_heuristica += k_in_row(state.board, i, state.to_move, (1, 1))
         valor_de_heuristica += k_in_row(state.board, i, state.to_move, (1, -1))
         valor_de_heuristica += k_in_row(state.board, i, state.to_move, (0, 1))
-    return valor_de_heuristica
+        valor_de_heuristicaOtro += k_in_row(state.board, i, enemy, (1, 0))
+        valor_de_heuristicaOtro += k_in_row(state.board, i, enemy, (1, 1))
+        valor_de_heuristicaOtro += k_in_row(state.board, i, enemy, (1, -1))
+        valor_de_heuristicaOtro += k_in_row(state.board, i, enemy, (0, 1))
+
+    return valor_de_heuristica - valor_de_heuristicaOtro
