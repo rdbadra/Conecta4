@@ -1,22 +1,16 @@
 from random import randint
 
 #Random heusistic
-def memoize(f):
-    memo = {}
-    def helper(x, y , j, k):
-        if x not in memo:
-            memo[x] = f(x, y, j, k)
-        return memo[x]
-    return helper
-
 def h0(state):
+    if state.utility != 0:
+        return state.utility * 1000000
     if state.to_move == 'X':
         enemy = 'O'
     else:
         enemy = 'X'
     return h1(state, state.to_move) - h1(state, enemy)
 
-def h1(state, player):
+def h1(state, jugador):
 
     def k_in_row(board, move, player, (delta_x, delta_y)):
         if player == 'X':
@@ -68,7 +62,7 @@ def h1(state, player):
      #   return state.utility * 10000000
 
 
-    def k_in_rowO(board, move, player, (delta_x, delta_y)):
+    def checkEnd(board, move, player, (delta_x, delta_y)):
         "Return true if there is a line through move on board for player."
 
         x, y = move
@@ -82,17 +76,14 @@ def h1(state, player):
         while board.get((x, y)) == player:
             n += 1
             x, y = x - delta_x, y - delta_y
-        n -= 1  # Because we counted move itself twice
+        #n -= 1  # Because we counted move itself twice
         if n >= 4:
-
             return 1000000
-
         else:
             return 0
 
     '''def k_in_rowX(board, move, player, (delta_x, delta_y)):
         "Return true if there is a line through move on board for player."
-
         x, y = move
         n = 1  # n is number of moves in row
         x, y = x + delta_x, y + delta_y
@@ -106,7 +97,6 @@ def h1(state, player):
             x, y = x - delta_x, y - delta_y
         #n -= 1  # Because we counted move itself twic
         if n >= 4:
-
             if player=='X':
                 return 1000000
             else:
@@ -118,26 +108,22 @@ def h1(state, player):
     valor_de_heuristica = 0
     valor_de_heuristicaOtro = 0
     ml = legal_moves(state)
-    if player == 'X':
-        enemy = 'O'
-    else:
-        enemy = 'X'
     a = 0
     for i in ml:
 
-        a += k_in_rowO(state.board, i, player, (1, 0))
-        a += k_in_rowO(state.board, i, player, (1, 1))
-        a += k_in_rowO(state.board, i, player, (1, -1))
-        a += k_in_rowO(state.board, i, player, (0, 1))
+        '''a += checkEnd(state.board, i, jugador, (1, 0))
+        a += checkEnd(state.board, i, jugador, (1, 1))
+        a += checkEnd(state.board, i, jugador, (1, -1))
+        a += checkEnd(state.board, i, jugador, (0, 1))
 
 
         if(a!=0):
-            return a
+            return a'''
 
-        valor_de_heuristica += k_in_row(state.board, i, player, (1, 0))
-        valor_de_heuristica += k_in_row(state.board, i, player, (1, 1))
-        valor_de_heuristica += k_in_row(state.board, i, player, (1, -1))
-        valor_de_heuristica += k_in_row(state.board, i, player, (0, 1))
+        valor_de_heuristica += k_in_row(state.board, i, jugador, (1, 0))
+        valor_de_heuristica += k_in_row(state.board, i, jugador, (1, 1))
+        valor_de_heuristica += k_in_row(state.board, i, jugador, (1, -1))
+        valor_de_heuristica += k_in_row(state.board, i, jugador, (0, 1))
         '''valor_de_heuristicaOtro += k_in_row(state.board, i, enemy, (1, 0))
         valor_de_heuristicaOtro += k_in_row(state.board, i, enemy, (1, 1))
         valor_de_heuristicaOtro += k_in_row(state.board, i, enemy, (1, -1))

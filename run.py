@@ -122,6 +122,6 @@ if selectPlayer == 'p':
     empiezasTu(state, player = 'O')
 elif selectPlayer == 'm':
     empiezaMaquina(state, player = 'X')
-else:
+elif selectPlayer == 'v':
     maquinaVsMaquina(state, player = 'X')
 
