@@ -18,9 +18,10 @@ def h1(state, jugador):
         else:
             enemy = 'X'
         x, y = move
-        n = 0         #Total
+        x, y = x + delta_x, y + delta_y
+        n = 10         #Total
         nBlancos = 0  #Number of spaces
-        nPlayer = 0   #Number of player's boxes
+        nPlayer = 1   #Number of player's boxes
         while (x < 8 and x > 0) and (y< 7 and y>0):
             if(board.get((x, y)) == player):
                 nPlayer += 1
@@ -35,8 +36,9 @@ def h1(state, jugador):
                     nBlancos += 1
             x, y = x + delta_x, y + delta_y
         x, y = move
+        x, y = x - delta_x, y - delta_y
         nBlancos = 0
-        nPlayer = 0
+        nPlayer = 1
         while (x < 8 and x > 0) and (y < 7 and y > 0):
             if (board.get((x, y)) == player):
                 nPlayer += 1
@@ -50,7 +52,7 @@ def h1(state, jugador):
                 if nBlancos < 4:
                     nBlancos += 1
             x, y = x - delta_x, y - delta_y
-        n -= 10  # Because we counted move itself twice
+        #n -= 10  # Because we counted move itself twice
         return n
 
     def legal_moves(state):
