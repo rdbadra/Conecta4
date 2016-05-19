@@ -1,6 +1,7 @@
 import games
 from heuristics import *
-
+import cristianHeuristics
+import guiseHeuristic
 #game = games.TicTacToe(h=3,v=3,k=3)
 
 def maquinaVsMaquina(state, player):
