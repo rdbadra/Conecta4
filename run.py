@@ -22,7 +22,7 @@ def maquinaVsMaquina(state, player):
             print "Thinking..."
             # move = games.minimax_decision(state, game)
             # move = games.alphabeta_full_search(state, game)
-            move = games.alphabeta_search(state, game, eval_fn=h0, d=d)
+            move = games.alphabeta_search(state, game, eval_fn=h0, d=d, player = 'O')
             # print h1(state)
 
             state = game.make_move(move, state)
@@ -125,4 +125,6 @@ elif selectPlayer == 'm':
     empiezaMaquina(state, player = 'X')
 elif selectPlayer == 'v':
     maquinaVsMaquina(state, player = 'X')
-
+else:
+    print "No ha introducido ningun valor correcto, empieza la maquina"
+    empiezaMaquina(state, player='X')

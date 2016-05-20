@@ -3,26 +3,29 @@ import utils
 #memoize
 def memoize(f):
     memo = {}
-    def helper(state):
+    def helper(state, player):
         pair = tuple(state.board.items())
         if pair not in memo:
-            memo[pair] = f(state)
+            memo[pair] = f(state, player)
         return memo[pair]
     return helper
 
 # Random heusistic
 @memoize
-def h0(state):
+def h0(state, player):
+    # para maquina vs maquina esta bien
+    #pero para persona contra maquina habria que quitar el comprobar si le toca a 'X' o 'O'
     if state.utility != 0:
-        if state.to_move == 'X':
+        if player == 'X':
             return state.utility * utils.infinity
         else:
-            return state.utility * -utils.infinity
-    if state.to_move == 'X':
+            return -state.utility * utils.infinity
+
+    if player == 'X':
         enemy = 'O'
     else:
         enemy = 'X'
-    return h1(state, state.to_move) - h1(state, enemy)
+    return h1(state, player) - h1(state, enemy)
 
 def h1(state, jugador):
     def k_in_row(board, move, player, (delta_x, delta_y)):
@@ -39,7 +42,8 @@ def h1(state, jugador):
             if (board.get((x, y)) == player):
                 nPlayer += 1
                 if (nPlayer + nBlancos > 3 or nBlancos > 3):
-                    n += 10 * nPlayer + 5 * nBlancos
+                    #n += 10 * nPlayer + 5 * nBlancos
+                    n += 10 * (nPlayer+nBlancos)
             elif (board.get((x, y)) == enemy):
                 n -= 10
                 nBlancos = 0
@@ -56,7 +60,8 @@ def h1(state, jugador):
             if (board.get((x, y)) == player):
                 nPlayer += 1
                 if (nPlayer + nBlancos > 3 or nBlancos > 3):
-                    n += 10 * nPlayer + 5 * nBlancos
+                    #n += 10 * nPlayer + 5 * nBlancos
+                    n += 10 * (nPlayer + nBlancos)
             elif (board.get((x, y)) == enemy):
                 n -= 10
                 nBlancos = 0
