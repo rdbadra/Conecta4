@@ -87,7 +87,7 @@ def empiezaMaquina(state, player):
             print "Thinking..."
             # move = games.minimax_decision(state, game)
             # move = games.alphabeta_full_search(state, game)
-            move = games.alphabeta_search(state, game, eval_fn=h1, d=d)
+            move = games.alphabeta_search(state, game, eval_fn=h0, d=d)
             # print h1(state)
 
             state = game.make_move(move, state)
