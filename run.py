@@ -2,6 +2,7 @@ import games
 from heuristics import *
 import cristianHeuristics
 import guiseHeuristic
+import tamaraHeuristic
 #game = games.TicTacToe(h=3,v=3,k=3)
 
 def maquinaVsMaquina(state, player):
@@ -13,7 +14,7 @@ def maquinaVsMaquina(state, player):
             print "Thinking..."
             # move = games.minimax_decision(state, game)
             # move = games.alphabeta_full_search(state, game)
-            move = games.alphabeta_search(state, game, eval_fn=h0, d=d)
+            move = games.alphabeta_search(state, game, eval_fn=cristianHeuristics.h2, d=d)
             # print h1(state)
 
             state = game.make_move(move, state)
@@ -86,7 +87,7 @@ def empiezaMaquina(state, player):
             print "Thinking..."
             # move = games.minimax_decision(state, game)
             # move = games.alphabeta_full_search(state, game)
-            move = games.alphabeta_search(state, game, eval_fn=h0, d=d)
+            move = games.alphabeta_search(state, game, eval_fn=h1, d=d)
             # print h1(state)
 
             state = game.make_move(move, state)
@@ -114,7 +115,7 @@ elif selectDificulty == 'd':
     d = 4
 else:
     d = 4
-    print "No ha seleccionado ninguna dificultad"
+    print "No ha seleccionado ninguna dificultad, dificil por defecto"
 
 selectPlayer = raw_input("Introduzca 'p' si quieres empezar o introduzca 'm' si quieres que empiece la maquina o 'v' para maquina vs maquina")
 

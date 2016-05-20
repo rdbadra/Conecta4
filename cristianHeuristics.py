@@ -1,4 +1,12 @@
 import random
+def memoize(f):
+    memo = {}
+    def helper(state, player):
+        pair = tuple(state.board.items())
+        if pair not in memo:
+            memo[pair] = f(state, player)
+        return memo[pair]
+    return helper
 
 def h0(state):
     return random.randint(-100, 100)
@@ -64,6 +72,6 @@ def k_in_row(board, move, player, (delta_x, delta_y)):
     if inRow is 4:
         return n + 5000
     return n
-
-def h2(state):
+@memoize
+def h2(state, player):
     return h1(state)

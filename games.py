@@ -110,9 +110,10 @@ def alphabeta_search(state, game, d=4, cutoff_test=None, eval_fn=None, player = 
     # for i in lista:
     #     print i
     #     print "------\n"
-
+    vector = []
     for a, s in lista:
-        print min_value(s, -infinity, infinity, 0)
+        vector.append(min_value(s, -infinity, infinity, 0))
+    print vector
 
     action, state = argmax(lista,
                            lambda ((a, s)): min_value(s, -infinity, infinity, 0))
