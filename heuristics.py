@@ -10,11 +10,8 @@ def memoize(f):
         return memo[pair]
     return helper
 
-# Random heusistic
 @memoize
 def h0(state, player):
-    # para maquina vs maquina esta bien
-    #pero para persona contra maquina habria que quitar el comprobar si le toca a 'X' o 'O'
     if state.utility != 0:
         if player == 'X':
             return state.utility * utils.infinity
@@ -34,7 +31,6 @@ def h1(state, jugador):
         else:
             enemy = 'X'
         x, y = move
-        #x, y = x + delta_x, y + delta_y
         n = 0  # Total
         seguidos = 0
         while (x < 8 and x > 0) and (y < 7 and y > 0):
@@ -46,7 +42,6 @@ def h1(state, jugador):
             else:
                 n += 10
             x, y = x + delta_x, y + delta_y
-            #seguidos += 1
         x, y = move
         x, y = x - delta_x, y - delta_y
         while (x < 8 and x > 0) and (y < 7 and y > 0):
@@ -58,7 +53,6 @@ def h1(state, jugador):
             else:
                 n += 10
             x, y = x - delta_x, y - delta_y
-        #seguidos += 1
         n -= 60
         if seguidos >= 4:
             return n * 100
@@ -84,40 +78,3 @@ def h1(state, jugador):
         valor_de_heuristica += k_in_row(state.board, i, jugador, (1, -1))
         valor_de_heuristica += k_in_row(state.board, i, jugador, (0, 1))
     return valor_de_heuristica
-"""def h1(state, jugador):
-    def k_in_row(board, move, player, (delta_x, delta_y)):
-        if player == 'X':
-            enemy = 'O'
-        else:
-            enemy = 'X'
-        x, y = move
-        #x, y = x + delta_x, y + delta_y
-        n = 0  # Total
-        seguidos = 0
-        while (x < 8 and x > 0) and (y < 7 and y > 0):
-            if (board.get((x, y)) == player):
-                n += 6
-            elif (board.get((x, y)) == enemy):
-                break
-            else:
-                n += 2
-            x, y = x + delta_x, y + delta_y
-            seguidos += 1
-        x, y = move
-        x, y = x - delta_x, y - delta_y
-        while (x < 8 and x > 0) and (y < 7 and y > 0):
-            if (board.get((x, y)) == player):
-                n += 6
-            elif (board.get((x, y)) == enemy):
-                break
-            else:
-                n += 2
-            x, y = x - delta_x, y - delta_y
-        seguidos += 1
-        n -= 12
-
-        if seguidos >= 4:
-            return n * 4
-        else:
-            return 0"""
-

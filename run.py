@@ -12,19 +12,13 @@ def maquinaVsMaquina(state, player):
 
         if player == 'X':
             print "Thinking..."
-            # move = games.minimax_decision(state, game)
-            # move = games.alphabeta_full_search(state, game)
-            move = games.alphabeta_search(state, game, eval_fn=cristianHeuristics.h2, d=d)
-            # print h1(state)
+            move = games.alphabeta_search(state, game, eval_fn=h0, d=d)
 
             state = game.make_move(move, state)
             player = 'O'
         else:
             print "Thinking..."
-            # move = games.minimax_decision(state, game)
-            # move = games.alphabeta_full_search(state, game)
             move = games.alphabeta_search(state, game, eval_fn=h0, d=d, player = 'O')
-            # print h1(state)
 
             state = game.make_move(move, state)
             player = 'X'
@@ -53,10 +47,7 @@ def empiezasTu(state, player):
             player = 'X'
         else:
             print "Thinking..."
-            # move = games.minimax_decision(state, game)
-            # move = games.alphabeta_full_search(state, game)
             move = games.alphabeta_search(state, game, eval_fn=h0, d=d)
-            # print h1(state)
 
             state = game.make_move(move, state)
             player = 'O'
@@ -85,10 +76,7 @@ def empiezaMaquina(state, player):
             player = 'X'
         else:
             print "Thinking..."
-            # move = games.minimax_decision(state, game)
-            # move = games.alphabeta_full_search(state, game)
             move = games.alphabeta_search(state, game, eval_fn=h0, d=d)
-            # print h1(state)
 
             state = game.make_move(move, state)
             player = 'O'
